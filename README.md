@@ -29,6 +29,21 @@ Now run the following command to have it in the K8s environment.
 `kubectl apply -f nodejs-namespace.yaml`
 
 <img src="screenshots/namespace.png" width="50%" />
-<!-- ![Namespace Image](screenshots/namespace.png) -->
 
+## Step 02: Create ConfigMap
+ConfigMap is used to maintain all the configuration details for different components. 
+
+Since mongodb and mongo-express need some environment variables, we'll keep all those non-sensitive details in our configmap. 
+
+create a file `mongo-configmap.yaml` with following contents. 
+
+```
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mongodb-configmap
+  namespace: nodejs-namespace
+data:
+  database_url: mongodb-service
+```
 

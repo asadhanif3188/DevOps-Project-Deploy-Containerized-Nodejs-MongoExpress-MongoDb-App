@@ -4,6 +4,7 @@ metadata:
   name: mongo-express-deployment
   namespace: nodejs-namespace
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app: mongo-express

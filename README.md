@@ -172,3 +172,4 @@ Now run the following command to create the service to expose the `mongodb` unde
 
 `kubectl apply -f mongodb-service.yaml -n nodejs-namespace`
 
+<img src="./screenshots/mongodb-service.png" width="70%" />

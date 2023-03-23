@@ -134,7 +134,7 @@ Following are the two most important environment variables for the container:
 **Note:** These variables, used in conjunction, create a new user and set that user's password. This user is created in the admin authentication database and given the role of root, which is a "superuser" role. 
 
 ### Run the command 
-Now run the following command to create the secret under our namespace. 
+Now run the following command to create the deployment under our namespace. 
 
 `kubectl apply -f mongodb-deployment.yaml -n nodejs-namespace`
 
@@ -173,3 +173,65 @@ Now run the following command to create the service to expose the `mongodb` unde
 `kubectl apply -f mongodb-service.yaml -n nodejs-namespace`
 
 <img src="./screenshots/mongodb-service.png" width="70%" />
+
+**Congratulations!** 1st tier of our application is up now. 
+
+## Step 06: Create Deployment Manifest file for Mongo-Express
+Now it is time to move towards our next tier deployment, i.e. Mongo-Express. Mongo-express is a web-based MongoDB admin interface written in Node.js, Express.js, and Bootstrap3.
+
+Let us create a deployment manifest file to execute Mongo-Express container at port `8081`. Official docker image of [mongo-express](https://hub.docker.com/_/mongo-express) is being used with `latest` tag.  
+
+Create a `mongo-express-deployment.yaml` file with following contents. 
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo-express-deployment
+  namespace: nodejs-namespace
+spec:
+  selector:
+    matchLabels:
+      app: mongo-express
+  template:
+    metadata:
+      labels:
+        app: mongo-express
+    spec:
+      containers:
+      - name: mongo-express
+        image: mongo-express
+        env:
+          - name: ME_CONFIG_MONGODB_ADMINUSERNAME
+            valueFrom:
+              secretKeyRef:
+                name: mongodb-secret
+                key: mongo-root-username
+          - name: ME_CONFIG_MONGODB_ADMINPASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mongodb-secret
+                key: mongo-root-password
+          - name: ME_CONFIG_MONGODB_SERVER
+            valueFrom:
+              configMapKeyRef:
+                name: mongodb-configmap
+                key: mongodb-service
+        ports:
+        - containerPort: 8081
+```
+
+#### Environment Variables for Mongo-Express
+We start the mongo-express instance by passing some environment variables in the deployment file. 
+
+Following are the most important environment variables for the `mongo-express` container:
+- `ME_CONFIG_MONGODB_ADMINUSERNAME`: Here we need to provide the admin username of the mongodb. Value of this env variable will be get from configmap. 
+- `ME_CONFIG_MONGODB_ADMINPASSWORD`: Here we need to provide the admin password of the mongodb. Value of this env variable will be get from configmap.
+- `ME_CONFIG_MONGODB_SERVER`: Here we need to provide the `service name` of the mongodb. Value of this env variable will be get from configmap.
+
+### Run the command 
+Now run the following command to create the deployment under our namespace. 
+
+`kubectl apply -f mongo-express-deployment.yaml -n nodejs-namespace`
+
+

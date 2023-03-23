@@ -24,6 +24,7 @@ metadata:
   name: nodejs-namespace
 ```
 
+### Run the command 
 Now run the following command to have it in the K8s environment. 
 
 `kubectl apply -f nodejs-namespace.yaml`
@@ -47,6 +48,7 @@ data:
   database_url: mongodb-service
 ```
 
+### Run the command 
 Now run the following command to create the configmap under our namespace. 
 
 `kubectl apply -f mongo-configmap.yaml -n nodejs-namespace`
@@ -74,10 +76,65 @@ data:
 
 **Note:** In the secret manifest file `username` and `password` are not placed as plaintext, rather these items are transformed into non-readable format using `base64` algorithm. 
 
+### Run the command 
 Now run the following command to create the secret under our namespace. 
 
 `kubectl apply -f mongo-secret.yaml -n nodejs-namespace`
 
 <img src="./screenshots/secret.png" width="60%" />
 
+
+## Step 04: Create Deployment Manifest file for MongoDB
+In this step we are going to create a deployment manifest file to execute MongoDB container at port `27017`. Official docker image of [mongodb](https://hub.docker.com/_/mongo) is being used with `latest` tag.  
+
+Create a `mongo-deployment.yaml` file with following contents. 
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb-deployment
+  namespace: nodejs-namespace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongodb
+  template:
+    metadata:
+      labels:
+        app: mongodb
+    spec:
+      containers:
+      - name: mongodb
+        image: mongo:latest
+        
+        env:
+        - name: MONGO_INITDB_ROOT_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: mongodb-secret
+              key: mongo-root-username
+        - name: MONGO_INITDB_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mongodb-secret
+              key: mongo-root-username
+        ports:
+        - containerPort: 27017
+```
+
+#### Environment Variables for MongoDB
+When we start the mongo image, we can adjust the initialization of the MongoDB instance by passing one or more environment variables in the deployment file. 
+
+Following are the two most important environment variables for the container:
+- `MONGO_INITDB_ROOT_USERNAME`
+- `MONGO_INITDB_ROOT_PASSWORD`
+
+**Note:** These variables, used in conjunction, create a new user and set that user's password. This user is created in the admin authentication database and given the role of root, which is a "superuser" role. 
+
+### Run the command 
+Now run the following command to create the secret under our namespace. 
+
+`kubectl apply -f mongo-deployment.yaml -n nodejs-namespace`
 

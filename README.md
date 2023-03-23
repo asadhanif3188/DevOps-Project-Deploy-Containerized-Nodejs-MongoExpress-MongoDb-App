@@ -12,7 +12,7 @@ This application contains following tiers:
 # Application Deployment Steps
 Following steps are being followed to containerd the applicaiton and deployed on Minikube/Kubernetes. 
 
-## Step 01: 
+## Step 01: Create Own Namespace 
 As application has 3-tiers, so each tier will be deployed as a separate Pod. And Pods work under some namespaces. We are going to create our own namespace, i.e. `nodejs-namespace` , to deploy all our Pods. 
 
 To create the namespace, we are going to use following contents for manifest file, i.e. `nodejs-namespace.yaml`. 

@@ -138,3 +138,5 @@ Now run the following command to create the secret under our namespace.
 
 `kubectl apply -f mongo-deployment.yaml -n nodejs-namespace`
 
+<img src="./screenshots/mongodb-deployment.png" width="60%" />
+

@@ -28,7 +28,7 @@ Now run the following command to have it in the K8s environment.
 
 `kubectl apply -f nodejs-namespace.yaml`
 
-<img src="screenshots/namespace.png" width="400" />
+<img src="screenshots/namespace.png" width="50%" />
 <!-- ![Namespace Image](screenshots/namespace.png) -->
 
 

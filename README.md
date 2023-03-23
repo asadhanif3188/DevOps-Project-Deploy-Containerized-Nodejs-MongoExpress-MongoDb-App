@@ -47,3 +47,9 @@ data:
   database_url: mongodb-service
 ```
 
+Now run the following command to create the configmap under our namespace. 
+
+`kubectl apply -f mongo-configmap.yaml -n nodejs-namespace`
+
+<img src="./screenshots/configmap.png" width="50%" />
+

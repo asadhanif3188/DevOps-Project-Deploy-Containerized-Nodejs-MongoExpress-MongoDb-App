@@ -29,7 +29,7 @@ Now run the following command to have it in the K8s environment.
 
 `kubectl apply -f nodejs-namespace.yaml`
 
-<img src="screenshots/namespace.png" width="60%" />
+<img src="screenshots/namespace.png" width="70%" />
 
 ## Step 02: Create ConfigMap Manifest file
 ConfigMap is used to maintain all the configuration details for different components. 
@@ -53,7 +53,7 @@ Now run the following command to create the configmap under our namespace.
 
 `kubectl apply -f mongo-configmap.yaml -n nodejs-namespace`
 
-<img src="./screenshots/configmap.png" width="60%" />
+<img src="./screenshots/configmap.png" width="70%" />
 
 ## Step 03: Create Secret Manifest file
 Secret is used to maintain all the **secret** configuration details for different components. 
@@ -81,13 +81,13 @@ Now run the following command to create the secret under our namespace.
 
 `kubectl apply -f mongo-secret.yaml -n nodejs-namespace`
 
-<img src="./screenshots/secret.png" width="60%" />
+<img src="./screenshots/secret.png" width="70%" />
 
 
 ## Step 04: Create Deployment Manifest file for MongoDB
 In this step we are going to create a deployment manifest file to execute MongoDB container at port `27017`. Official docker image of [mongodb](https://hub.docker.com/_/mongo) is being used with `latest` tag.  
 
-Create a `mongo-deployment.yaml` file with following contents. 
+Create a `mongodb-deployment.yaml` file with following contents. 
 
 ```
 apiVersion: apps/v1
@@ -136,7 +136,39 @@ Following are the two most important environment variables for the container:
 ### Run the command 
 Now run the following command to create the secret under our namespace. 
 
-`kubectl apply -f mongo-deployment.yaml -n nodejs-namespace`
+`kubectl apply -f mongodb-deployment.yaml -n nodejs-namespace`
 
-<img src="./screenshots/mongodb-deployment.png" width="60%" />
+<img src="./screenshots/mongodb-deployment.png" width="70%" />
+
+## Step 05: Create Service Manifest file for MongoDB
+Up till now our mongodb is running but we want it to be accessible by other applications. Service is a concept which helps us in this regards. There are different types of services in K8s for different use-cases. 
+1. ClusterIP
+2. NodePort 
+3. LoadBalancer 
+4. Headless
+
+For our use-case, `ClusterIP` service is suitable because it exposes the resource within the cluster of k8s. We also want to expose the MongoDB within the cluster so that only `mongo-express` and `nodejs app` can access it. 
+
+Create a `mongodb-service.yaml` file with following contents. 
+
+```
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb-service
+  namespace: nodejs-namespace
+spec:
+  type: ClusterIP
+  selector:
+    app: mongodb
+  ports:
+  - port: 27017
+    protocol: TCP
+    targetPort: 27017
+```
+
+### Run the command 
+Now run the following command to create the service to expose the `mongodb` under our namespace. 
+
+`kubectl apply -f mongodb-service.yaml -n nodejs-namespace`
 

@@ -33,4 +33,5 @@ spec:
               name: mongodb-configmap
               key: database_url
         ports:
-        - containerPort: 8081
+        - name: mongo-express
+          containerPort: 8081

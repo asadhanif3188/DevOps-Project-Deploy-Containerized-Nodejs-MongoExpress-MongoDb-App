@@ -78,3 +78,6 @@ Now run the following command to create the secret under our namespace.
 
 `kubectl apply -f mongo-secret.yaml -n nodejs-namespace`
 
+<img src="./screenshots/secret.png" width="60%" />
+
+

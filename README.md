@@ -216,7 +216,7 @@ spec:
             valueFrom:
               configMapKeyRef:
                 name: mongodb-configmap
-                key: mongodb-service
+                key: database_url
         ports:
         - containerPort: 8081
 ```
@@ -225,9 +225,9 @@ spec:
 We start the mongo-express instance by passing some environment variables in the deployment file. 
 
 Following are the most important environment variables for the `mongo-express` container:
-- `ME_CONFIG_MONGODB_ADMINUSERNAME`: Here we need to provide the admin username of the mongodb. Value of this env variable will be get from configmap. 
-- `ME_CONFIG_MONGODB_ADMINPASSWORD`: Here we need to provide the admin password of the mongodb. Value of this env variable will be get from configmap.
-- `ME_CONFIG_MONGODB_SERVER`: Here we need to provide the `service name` of the mongodb. Value of this env variable will be get from configmap.
+- `ME_CONFIG_MONGODB_ADMINUSERNAME`: Here we need to provide the **admin username** of the mongodb. Value of this env variable will be get from configmap. 
+- `ME_CONFIG_MONGODB_ADMINPASSWORD`: Here we need to provide the **admin password** of the mongodb. Value of this env variable will be get from configmap.
+- `ME_CONFIG_MONGODB_SERVER`: Here we need to provide the **service name** of the mongodb. Value of this env variable will be get from configmap.
 
 ### Run the command 
 Now run the following command to create the deployment under our namespace. 

@@ -30,6 +30,6 @@ spec:
             valueFrom:
               configMapKeyRef:
                 name: mongodb-configmap
-                key: mongodb-service
+                key: database_url
         ports:
         - containerPort: 8081

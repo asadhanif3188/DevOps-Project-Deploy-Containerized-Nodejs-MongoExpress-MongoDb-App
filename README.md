@@ -74,3 +74,7 @@ data:
 
 **Note:** In the secret manifest file `username` and `password` are not placed as plaintext, rather these items are transformed into non-readable format using `base64` algorithm. 
 
+Now run the following command to create the secret under our namespace. 
+
+`kubectl apply -f mongo-secret.yaml -n nodejs-namespace`
+

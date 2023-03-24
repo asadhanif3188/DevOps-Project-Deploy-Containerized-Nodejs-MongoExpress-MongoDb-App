@@ -236,3 +236,31 @@ Now run the following command to create the deployment under our namespace.
 
 <img src="./screenshots/mongo-express-deployment.png" width="70%" />
 
+## Step 07: Create Service Manifest file for Mongo-Express
+Now it is time to expose the service for mongo-express, to make it accessible by everyone. 
+
+For our use-case, `LoadBalancer` service is suitable because it exposes the resource outside the cluster of k8s. We'll expose the mongo-express service on a specific port, i.e. `31000`, so that any user can access it via browser at a provided port. 
+
+Create a `mongo-express-service.yaml` file with following contents. 
+
+```
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-express-service
+  namespace: nodejs-namespace
+spec:
+  selector:
+    app: mongo-express
+  type: LoadBalancer
+  ports: 
+    - port: 8081
+      protocol: TCP
+      targetPort: 8081
+      nodePort: 31000
+```
+
+### Run the command 
+Now run the following command to create the service to expose the `mongo-express` under our namespace. 
+
+`kubectl apply -f mongo-express-service.yaml -n nodejs-namespace`

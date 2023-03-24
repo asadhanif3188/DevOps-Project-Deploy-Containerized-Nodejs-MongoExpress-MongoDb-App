@@ -274,5 +274,5 @@ We are able to see the mongo-express in action using our browser. But before thi
 
 Run following command
 
-`minikube service mongo-express-service`
+`minikube service mongo-express-service -n nodejs-namespace`
 

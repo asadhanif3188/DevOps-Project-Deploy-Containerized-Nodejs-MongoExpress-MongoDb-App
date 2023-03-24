@@ -276,3 +276,6 @@ Run following command
 
 `minikube service mongo-express-service -n nodejs-namespace`
 
+<img src="./screenshots/minikube-service-url.png" width="70%" />
+
+<img src="./screenshots/mongo-express-in-browser.png" width="70%" />

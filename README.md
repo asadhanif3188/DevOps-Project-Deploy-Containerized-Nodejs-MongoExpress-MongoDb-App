@@ -264,3 +264,7 @@ spec:
 Now run the following command to create the service to expose the `mongo-express` under our namespace. 
 
 `kubectl apply -f mongo-express-service.yaml -n nodejs-namespace`
+
+<img src="./screenshots/mongo-express-service.png" width="70%" />
+
+**Hurray!** Up till now we have completd the deployment of 1st and 2nd tiers. We can also see all components, i.e. Pods, ReplicaSets, Deployments, and Services, of both tiers.  

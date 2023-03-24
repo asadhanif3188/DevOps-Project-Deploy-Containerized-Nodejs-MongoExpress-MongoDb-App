@@ -14,9 +14,9 @@ spec:
         app: mongodb
     spec:
       containers:
-      - name: mongodb
-        image: mongo:latest
-        
+      - image: mongo:latest
+        name: mongodb
+                
         env:
         - name: MONGO_INITDB_ROOT_USERNAME
           valueFrom:
@@ -27,7 +27,6 @@ spec:
           valueFrom:
             secretKeyRef:
               name: mongodb-secret
-              key: mongo-root-username
+              key: mongo-root-password
         ports:
-        - name: mongo-database
-          containerPort: 27017
+        - containerPort: 27017

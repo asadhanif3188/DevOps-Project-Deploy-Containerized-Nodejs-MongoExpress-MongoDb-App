@@ -119,7 +119,7 @@ spec:
           valueFrom:
             secretKeyRef:
               name: mongodb-secret
-              key: mongo-root-username
+              key: mongo-root-password
         ports:
         - containerPort: 27017
 ```
@@ -235,3 +235,34 @@ Now run the following command to create the deployment under our namespace.
 `kubectl apply -f mongo-express-deployment.yaml -n nodejs-namespace`
 
 
+## Step 07: Create Service Manifest file for Mongo-Express
+Now it is time to expose the service for mongo-express, to make it accessible by everyone. 
+
+For our use-case, `LoadBalancer` service is suitable because it exposes the resource outside the cluster of k8s. We'll expose the mongo-express service on a specific port so that any user can access it via browser at a provided port. 
+
+Create a `mongodb-service.yaml` file with following contents. 
+
+```
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb-service
+  namespace: nodejs-namespace
+spec:
+  type: ClusterIP
+  selector:
+    app: mongodb
+  ports:
+  - port: 27017
+    protocol: TCP
+    targetPort: 27017
+```
+
+### Run the command 
+Now run the following command to create the service to expose the `mongodb` under our namespace. 
+
+`kubectl apply -f mongodb-service.yaml -n nodejs-namespace`
+
+<img src="./screenshots/mongodb-service.png" width="70%" />
+
+**Congratulations!** 1st tier of our application is up now. 
